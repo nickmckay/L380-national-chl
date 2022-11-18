@@ -20,11 +20,11 @@ chlgood <- filter(ts,paleoData_variableName == "RABD660670" & paleoData_useInL38
 
 for(i in 1:nrow(chlgood)){
   year <- convertBP2AD(chlgood$age[[i]])
-  toplot <- tibble(year = year, 
-                   RABD660670 = chlgood$paleoData_values[[i]])
-  
-  toplot <- mutate(toplot,
-                   epoch = culturalEpoch(year))
+  toplot <- tibble(year = year,
+                   depth = chlgood$depth[[i]],
+                   RABD660670 = chlgood$paleoData_values[[i]]) %>% 
+    mutate(epoch = culturalEpoch(year)) %>% 
+    filter(depth > 1)
   
   fo <- ggplot(toplot) + 
     geom_line(aes(x = year, y = RABD660670,color = epoch)) +
@@ -34,7 +34,13 @@ for(i in 1:nrow(chlgood)){
     theme(legend.position = c(.2,.8))
   
   ggsave(plot = fo,filename = glue::glue("plots/RABD660670/{chlgood$geo_siteName[[i]]}-RABD6606670-CulturalEpoch.pdf"),width = 6,height = 4)
+  
+  fo2 <- fo + xlim(c(1,2020))
+  ggsave(plot = fo2,filename = glue::glue("plots/RABD660670-2k/{chlgood$geo_siteName[[i]]}-RABD6606670-CulturalEpoch.pdf"),width = 6,height = 4)
 }
-  system(glue::glue("rm {file.path(getwd(),'plots','RABD660670','allplots.pdf')}"))
-  system(glue::glue("cd {file.path(getwd(),'plots','RABD660670')};pdftk *.pdf cat output allplots.pdf"))
+system(glue::glue("rm {file.path(getwd(),'plots','RABD660670','allplots.pdf')}"))
+system(glue::glue("cd {file.path(getwd(),'plots','RABD660670')};pdftk *.pdf cat output allplots.pdf"))
+
+  system(glue::glue("rm {file.path(getwd(),'plots','RABD660670-2k','allplots.pdf')}"))
+  system(glue::glue("cd {file.path(getwd(),'plots','RABD660670-2k')};pdftk *.pdf cat output allplots.pdf"))
 
