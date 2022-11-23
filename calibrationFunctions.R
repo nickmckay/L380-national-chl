@@ -12,7 +12,8 @@ calcConc <- function(paleoData_values){
   minus <- function(x) (x^10)+.98
   minRoot <- minus_root(paleoData_values)
   
-  calibration <-  ten(-0.4707 +(2.3629 * minRoot))
+  #calibration <-  ten(-0.4707 +(2.3629 * minRoot)) Ethan's
+  calibration <-  ten(-0.8238 +(2.7233 * minRoot)) #Nick retry
   
   return(calibration)
 }
@@ -33,3 +34,14 @@ culturalEpoch <- function(year){
 deltas <- function(vec){
   return(c(diff(vec),NA))
 }
+
+whichIsland <- function(lat,lon){
+ if(lon > 174 | lat > -40){
+   return("North Island")
+ }else{
+   return("South Island")
+ }
+}
+
+
+

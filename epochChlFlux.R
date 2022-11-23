@@ -14,7 +14,7 @@ chlgood <- filter(ts,paleoData_variableName == "RABD660670" & paleoData_useInL38
 
 legTitle <- expression(paste("Chloropigment flux (",mu,"g ", cm^-2," ",yr^-1,")"))
 concTitle <- expression(paste("Chloropigment concentration (",mu,"g ", g^-1,")"))
-
+allData <- data.frame()
 for(i in 1:nrow(chlgood)){
   year <- convertBP2AD(chlgood$age[[i]])
   toplot <- tibble(year = year,
@@ -29,7 +29,14 @@ for(i in 1:nrow(chlgood)){
            chlEst = calcConc(RABD660670),
            chlFlux = chlEst * dbd * sedRate) %>% 
     filter(depth > 1,
-           chlFlux < 1e6)
+           chlFlux < 1e6,
+           year >= 800)
+  
+  toplot$lake <- chlgood$geo_lakeName[i]
+  toplot$lat <- chlgood$geo_latitude[i]
+  toplot$long <- chlgood$geo_longitude[i]
+  
+  allData <- bind_rows(allData,toplot)
   
   fo <- ggplot(toplot) + 
     geom_line(aes(x = year, y = chlFlux,color = culturalEpoch)) +
@@ -85,3 +92,27 @@ for(d in 2:length(ad)){
 system(glue::glue("rm {file.path(tp,'allplots.pdf')}"))
 system(glue::glue("cd {file.path(tp)};pdftk *.pdf cat output allplots.pdf"))
 }
+
+#national violin plots
+
+allData$island <- map2_chr(allData$lat,allData$long,whichIsland)
+
+ggplot(allData) + geom_violin(aes(x = culturalEpoch, y = chlFlux, fill = culturalEpoch)) +
+  ggtitle(legTitle) +
+  ylim(c(0,50)) +
+  scale_fill_brewer("Cultural Epoch",palette = "Dark2") +
+  theme_bw()+
+  ylab(legTitle) +
+  xlab("")  
+library(ggpattern)
+
+ggplot(allData) + geom_violin_pattern(aes(x = culturalEpoch, y = chlFlux, fill = culturalEpoch,pattern_angle = island)) +
+  ggtitle(legTitle) +
+  ylim(c(0,50)) +
+  scale_fill_brewer("Cultural Epoch",palette = "Dark2") +
+  theme_bw()+
+  ylab(legTitle) +
+  xlab("")
+
+
+  
