@@ -50,3 +50,6 @@ system(glue::glue("cd {file.path(getwd(),'plots','RABD660670')};pdftk *.pdf cat 
   system(glue::glue("rm {file.path(getwd(),'plots','RABD660670-2k','allplots.pdf')}"))
   system(glue::glue("cd {file.path(getwd(),'plots','RABD660670-2k')};pdftk *.pdf cat output allplots.pdf"))
 
+  
+
+  

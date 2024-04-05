@@ -97,22 +97,26 @@ system(glue::glue("cd {file.path(tp)};pdftk *.pdf cat output allplots.pdf"))
 
 allData$island <- map2_chr(allData$lat,allData$long,whichIsland)
 
-ggplot(allData) + geom_violin(aes(x = culturalEpoch, y = chlFlux, fill = culturalEpoch)) +
+allViolin <- ggplot(allData) + geom_violin(aes(x = culturalEpoch, y = chlFlux, fill = culturalEpoch)) +
   ggtitle(legTitle) +
   ylim(c(0,50)) +
   scale_fill_brewer("Cultural Epoch",palette = "Dark2") +
   theme_bw()+
   ylab(legTitle) +
   xlab("")  
-library(ggpattern)
 
-ggplot(allData) + geom_violin_pattern(aes(x = culturalEpoch, y = chlFlux, fill = culturalEpoch,pattern_angle = island)) +
+ggsave(filename = "plots/allFluxViolin.pdf",plot = allViolin)
+
+botIslands <- ggplot(allData) + geom_violin(aes(x = culturalEpoch, y = chlFlux, fill = culturalEpoch,linetype = island)) +
   ggtitle(legTitle) +
   ylim(c(0,50)) +
   scale_fill_brewer("Cultural Epoch",palette = "Dark2") +
   theme_bw()+
   ylab(legTitle) +
   xlab("")
+
+ggsave(filename = "plots/allFluxViolinByIsland.pdf",plot = botIslands)
+
 
 
   
