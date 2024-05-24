@@ -163,7 +163,7 @@ chlIndexMeanTL <- ggplot(tal) +
   theme_bw()
 
 
-ggsave(chlIndexMeanTL,"Chl Index mean by era and trophic level.pdf")
+ggsave(plot = chlIndexMeanTL,filename = "Chl Index mean by era and trophic level.pdf")
 
 
 #violin
@@ -177,7 +177,7 @@ chlIndexChangeTL <- ggplot(tal) +
   ylab("Change in chloropigment concentration (relative to prehuman)") +
   theme_bw()
 
-ggsave(chlIndexChangeTL,"Chl Index change relative to prehuman, by era and trophic level.pdf")
+ggsave(plot = chlIndexChangeTL,filename = "Chl Index change relative to prehuman, by era and trophic level.pdf")
 
 
 
@@ -191,7 +191,7 @@ chlIndexMaoriToEuroTL <- ggplot(toAnalyze) +
   ylab("Percent change in chloropigment concentration from Maori to European") +
   theme_bw()
 
-ggsave(chlIndexMaoriToEuroTL,"Chl Index change from Maori to Euro by trophic level.pdf")
+ggsave(plot = chlIndexMaoriToEuroTL,filename = "Chl Index change from Maori to Euro by trophic level.pdf")
 
 
 flux <- pivot_longer(toAnalyze,cols = c("meanEuroChlIndexFlux","meanMaoriChlIndexFlux"),names_to = "epoch",values_to = "indexFlux")
